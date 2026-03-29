@@ -30,6 +30,7 @@ export type LifeEvent = {
 export type ScenarioResult = {
   scenario: string;
   netWorth: number[];
+  contributions: number[];
   retirementYear?: number;
   maxNetWorth: number;
 };

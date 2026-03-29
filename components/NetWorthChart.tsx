@@ -48,6 +48,11 @@ export default function NetWorthChart({ scenarios, currency }: NetWorthChartProp
       dataPoint[scenario.scenario] = Math.round(scenario.netWorth[yearIndex] || 0);
     });
 
+    // Add contributions only once (same for all scenarios)
+    if (scenarios.length > 0) {
+      dataPoint["Contributions"] = Math.round(scenarios[0].contributions[yearIndex] || 0);
+    }
+
     return dataPoint;
   });
 
@@ -67,6 +72,7 @@ export default function NetWorthChart({ scenarios, currency }: NetWorthChartProp
               labelFormatter={(label) => `Year ${label}`}
             />
             <Legend />
+            {/* Net Worth lines - one per scenario */}
             {scenarios.map((scenario, idx) => (
               <Line
                 key={scenario.scenario}
@@ -76,8 +82,21 @@ export default function NetWorthChart({ scenarios, currency }: NetWorthChartProp
                 strokeWidth={2}
                 dot={false}
                 connectNulls
+                name={scenario.scenario}
               />
             ))}
+            {/* Contributions line - single for all scenarios */}
+            <Line
+              type="monotone"
+              dataKey="Contributions"
+              stroke="#6b7280"
+              strokeWidth={1}
+              strokeDasharray="5 5"
+              strokeOpacity={0.7}
+              dot={false}
+              connectNulls
+              name="Your Contributions"
+            />
           </LineChart>
         </ResponsiveContainer>
       </div>
